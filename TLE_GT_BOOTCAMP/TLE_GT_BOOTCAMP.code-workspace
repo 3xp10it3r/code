@@ -8,7 +8,8 @@
 		"files.associations": {
 			"iostream": "cpp",
 			"ios": "cpp",
-			"vector": "cpp"
+			"vector": "cpp",
+			"ostream": "cpp"
 		}
 	}
 }

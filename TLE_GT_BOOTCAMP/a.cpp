@@ -49,10 +49,19 @@ ll phin(ll n) {ll number = n; if (n % 2 == 0) {number /= 2; while (n % 2 == 0) n
 
 
 void solve() {
-    vector<int> c = {1,2,3,4};
-    for(auto v : c) {
-        cout << v << endl;
+   int arr[26]={0};
+   string s;
+   cin >> s;
+   for(auto x : s) {
+    arr[x-'a']++;
+   }
+
+   for(auto x : s) {
+    if(arr[x-'a']==1) {
+        cout << x << endl;
+        break;
     }
+   }
 }
 int main() {
 #ifndef ONLINE_JUDGE
