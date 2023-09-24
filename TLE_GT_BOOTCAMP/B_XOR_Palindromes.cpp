@@ -163,28 +163,32 @@ void solve()
         cin >> n;
         string s;
         cin >> s;
-        ll l = 0, r = s.size() - 1, z = 0, o = 0, diff = 0, mo = 0;
-        while (l <= r)
-        {
-            if (s[l] != s[r])
-            {
-                diff++;
-            }
-            l++;
-            r--;
-        }
-        for (auto x : s)
-            if (x == '1')
-                o++;
-            else
-                z++;
 
-        string ns(n + 1, '0');
-        for (ll y = diff; y <= z; y++)
+        ll minFlips = 0;
+
+        for (int i = 0, j = s.size() - 1; i < j; i++, j--)
         {
-            ns[y] = '1';
+            if (s[i] != s[j])
+            {
+                minFlips++;
+            }
         }
-        ns[o] = '1';
+        string ns(n + 1, '0');
+        ll maxFlips = minFlips + 2 * ((n - 2 * minFlips) / 2);
+        if (n % 2)
+        {
+            for (int i = minFlips; i <= maxFlips + 1; i++)
+            {
+                ns[i] = '1';
+            }
+        }
+        else
+        {
+            for (int i = minFlips; i <= maxFlips; i += 2)
+            {
+                ns[i] = '1';
+            }
+        }
         cout << ns << endl;
     }
 }

@@ -1,68 +1,72 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
+typedef long long ll;
 
 int main()
 {
-    int T;
-    cin >> T;
-
-    while (T--)
+    ll t;
+    cin >> t;
+    while (t--)
     {
-        int N;
-        cin >> N;
+        ll n;
+        cin >> n;
+        vector<ll> v(n);
+        for (auto &x : v)
+            cin >> x;
+        sort(v.begin(), v.end());
 
-        vector<int> A(N);
-        for (int i = 0; i < N; i++)
+        vector<ll> b(n);
+        int ind = 0;
+        for (int i = 0; i < n; i++)
         {
-            cin >> A[i];
+            if (ind >= n)
+                ind = 1;
+            b[ind] = v[i];
+            ind += 2;
         }
 
-        sort(A.begin(), A.end());
-
-        vector<int> result(N, -1);
-
-        int left = 0, right = N - 1;
-        bool isLeft = true;
-
-        for (int i = 0; i < N; i++)
+        vector<ll> c(n);
+        ind = 1;
+        for (int i = 0; i < n; i++)
         {
-            if (isLeft)
-            {
-                result[i] = A[left++];
-            }
-            else
-            {
-                result[i] = A[right--];
-            }
-            isLeft = !isLeft;
+            if (ind >= n)
+                ind = 0;
+            c[ind] = v[i];
+            ind += 2;
         }
 
-        bool isConcussive = true;
-        for (int i = 1; i < N - 1; i++)
+        auto verify = [&](vector<ll> &A)
         {
-            if (!((result[i - 1] < result[i] && result[i] > result[i + 1]) ||
-                  (result[i - 1] > result[i] && result[i] < result[i + 1])))
+            for (auto i = 1; i < A.size() - 1; i++)
             {
-                isConcussive = false;
-                break;
+                if (A[i] > A[i - 1] && A[i] > A[i + 1])
+                    continue;
+                if (A[i] < A[i - 1] && A[i] < A[i + 1])
+                    continue;
+                return false;
+            }
+            return true;
+        };
+
+        if (verify(b))
+        {
+            for (auto &e : b)
+            {
+                cout << e << " ";
             }
         }
-
-        if (isConcussive)
+        else if (verify(c))
         {
-            for (int i = 0; i < N; i++)
+            for (auto &e : c)
             {
-                cout << result[i] << " ";
+                cout << e << " ";
             }
-            cout << endl;
         }
         else
         {
-            cout << "-1" << endl;
+            cout << -1;
         }
+        cout << endl;
     }
-
     return 0;
 }
