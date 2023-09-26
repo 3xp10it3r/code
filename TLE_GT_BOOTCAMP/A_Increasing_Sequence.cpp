@@ -153,42 +153,26 @@ ll phin(ll n)
 } // O(sqrt(N))
 /*--------------------------------------------------------------------------------------------------------------------------*/
 
-bool verify(vector<ll> &v, ll h, ll w)
-{
-    ll water = 0;
-    for (auto &x : v)
-    {
-        water += (h - min(h, x));
-        if (water > w)
-            return false;
-    }
-    return true;
-}
-
 void solve()
 {
-    ll n, x;
-    cin >> n >> x;
+    ll n;
+    cin >> n;
     vector<ll> v(n);
-    for (ll i = 0; i < n; i++)
-        cin >> v[i];
-
-    ll low = 1, high = 2e9;
-    ll ans = -1;
-    while (low <= high)
+    for (auto &x : v)
     {
-        ll mid = low + (high - low) / 2;
-        if (verify(v, mid, x))
+        cin >> x;
+    }
+
+    ll x = 0;
+    for (int i = 0; i < n; i++)
+    {
+        x++;
+        if (v[i] == x)
         {
-            ans = max(ans, mid);
-            low = mid + 1;
-        }
-        else
-        {
-            high = mid - 1;
+            x++;
         }
     }
-    cout << ans << endl;
+    cout << x << endl;
 }
 
 int main()

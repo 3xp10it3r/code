@@ -157,42 +157,31 @@ void solve()
 {
     ll n, k;
     cin >> n >> k;
-    vector<ll> a(n + 1, 0), h(n + 1, 0);
-    for (ll i = 1; i <= n; i++)
-    {
-        cin >> a[i];
-        a[i] += a[i - 1];
-    }
-    for (ll i = 1; i <= n; i++)
-    {
-        cin >> h[i];
-    }
+    vector<ll> a(n), h(n);
+    for (auto &x : a)
+        cin >> x;
+    for (auto &x : h)
+        cin >> x;
+
+    ll start = 0;
+    ll sum = 0;
     ll ans = 0;
-    ll st = 0, v = 0;
-    for (ll i = 1; i <= n; i++)
+
+    for (ll end = 0; end < n; end++)
     {
-        if (i == n)
+        if (end > 0 && h[end - 1] % h[end])
         {
-            if (a[i] - (i > 0 ? a[i - 1] : 0) <= k)
-            {
-                ans = max(ans, 1ll);
-            }
-            continue;
+            sum = 0;
+            start = end;
         }
-        if (h[i] % h[i + 1] == 0)
+        sum += a[end];
+        while (start <= end && sum > k)
         {
-            v = a[i + 1] - a[st];
-            while (v > k)
-            {
-                v = a[i + 1] - a[st + 1];
-                st++;
-            }
-            ans = max(ans, i + 1 - st);
+            sum -= a[start];
+            start++;
         }
-        else
-        {
-            st = i;
-        }
+        ll len = end - start + 1;
+        ans = max(ans, len);
     }
     cout << ans << endl;
 }

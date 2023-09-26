@@ -153,42 +153,73 @@ ll phin(ll n)
 } // O(sqrt(N))
 /*--------------------------------------------------------------------------------------------------------------------------*/
 
-bool verify(vector<ll> &v, ll h, ll w)
-{
-    ll water = 0;
-    for (auto &x : v)
-    {
-        water += (h - min(h, x));
-        if (water > w)
-            return false;
-    }
-    return true;
-}
-
 void solve()
 {
-    ll n, x;
-    cin >> n >> x;
+    ll n;
+    cin >> n;
     vector<ll> v(n);
-    for (ll i = 0; i < n; i++)
-        cin >> v[i];
-
-    ll low = 1, high = 2e9;
-    ll ans = -1;
-    while (low <= high)
+    for (auto &x : v)
     {
-        ll mid = low + (high - low) / 2;
-        if (verify(v, mid, x))
+        cin >> x;
+    }
+
+    ll taken = 0;
+    ll sum = 0;
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if ((i + 1) % 2 == 1)
         {
-            ans = max(ans, mid);
-            low = mid + 1;
+            if (v[i] != LONG_MIN && v[i] <= n - taken && v[i] > 0)
+            {
+                taken++;
+                sum += v[i];
+                v[i] = LONG_MIN;
+            }
+        }
+    }
+
+    ll index = 0;
+    map<ll, ll> mp;
+    map<ll, ll>::iterator it = mp.begin();
+    for (int i = 0; i < n; i++)
+    {
+        cout << n - taken << " " << sum << " " << v[i] << " in" << index << endl;
+        if (v[i] != LONG_MIN)
+        {
+            index++;
+            if (index % 2 == 1 && v[i] <= n - taken && v[i] > 0)
+            {
+                sum += v[i];
+                v[i] = LONG_MIN;
+                taken++;
+                index--;
+            }
+            else if (index % 2 == 0 && v[i] <= n - taken && v[i] > 0 && mp.size() > 0 && abs(it->first) < v[i])
+            {
+                ll key = it->first;
+                sum -= abs(key);
+                mp[key]--;
+                if (mp[key] == 0)
+                {
+                    mp.erase(key);
+                }
+                sum += v[i];
+                taken++;
+                index--;
+            }
+            else
+            {
+                mp[abs(v[i])]++; // -4 -> 1 , -3 -> 1
+            }
         }
         else
         {
-            high = mid - 1;
+            continue;
         }
     }
-    cout << ans << endl;
+
+    cout << sum << endl;
 }
 
 int main()
